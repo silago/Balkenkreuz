@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/PlayerBullet.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/PinkBullet.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 2.76704, 5.67257 )
+
+[node name="PlayerBullet" type="Area2D"]
+collision_layer = 259
+collision_mask = 2
+script = ExtResource( 1 )
+speed = 1000
+bullet_degree = 10.0
+accell = 1.0
+
+[node name="Poly" type="CollisionPolygon2D" parent="."]
+position = Vector2( -1.49544, 15.3373 )
+scale = Vector2( 1.79743, 1.78589 )
+polygon = PoolVector2Array( -14.9098, -22.1828, -17.3517, -8.80232, -12.468, 1.84743, 1.09791, 6.76271, 14.1211, 1.84743, 17.6483, -8.52925, 15.4777, -22.7289 )
+disabled = true
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2( -0.237823, -2.61609 )
+shape = SubResource( 1 )
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
