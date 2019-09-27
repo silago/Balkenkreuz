@@ -29,12 +29,12 @@ func _input(event):
 #	pass
 "
 
-[sub_resource type="OccluderPolygon2D" id=3]
+[sub_resource type="OccluderPolygon2D" id=2]
 closed = false
 cull_mode = 1
 polygon = PoolVector2Array( -196.069, -26.3269, -167.26, -104.997, -119.615, -161.507, -25.4323, -194.748, 62.1024, -188.1, 118.612, -155.967, 179.554, -78.4045, 195.066, -5.27429, 175.122, 90.0166, 124.152, 153.174, 52.1301, 185.307, -19.8921, 193.064, -98.5624, 172.011, -141.776, 133.23, -179.449, 80.0443, -196.069, -7.49036 )
 
-[sub_resource type="OccluderPolygon2D" id=2]
+[sub_resource type="OccluderPolygon2D" id=3]
 polygon = PoolVector2Array( -19.6248, -2.51273, 17.2866, -2.62289, 16.8458, 2.77606, 0.318359, 4.64917, -16.76, 1.89459 )
 
 [node name="Node2D" type="Node2D"]
@@ -46,7 +46,7 @@ texture = ExtResource( 7 )
 [node name="DestroyPlanet" parent="." instance=ExtResource( 5 )]
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="DestroyPlanet"]
-occluder = SubResource( 3 )
+occluder = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -560 )
@@ -59,7 +59,7 @@ target = NodePath("../Player")
 [node name="Player" type="Node2D" parent="."]
 position = Vector2( -23.7432, -290.929 )
 script = ExtResource( 3 )
-rotation_speed = 0.03
+rotation_speed = 0.3
 bullet_prefab = ExtResource( 6 )
 
 [node name="Camera2D2" type="Camera2D" parent="Player"]
@@ -76,7 +76,7 @@ hframes = 5
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player"]
 position = Vector2( -41.7594, 0.661133 )
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 
 [node name="Planet" type="Node2D" parent="."]
 visible = false
