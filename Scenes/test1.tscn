@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Sprites/plane.grayscale.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/base planet.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Scripts/Camera.gd" type="Script" id=4]
 [ext_resource path="res://Prefabs/DestroyPlanet.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Prefabs/Bullet.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Sprites/fog_sky.jpg" type="Texture" id=7]
+[ext_resource path="res://Assets/Sprites/light.png" type="Texture" id=8]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -19,15 +21,32 @@ func _ready():
 	Game.root_node = self
 	pass # Replace with function body.
 
+func _input(event):
+	if event as InputEventMouseButton:
+		pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 "
 
+[sub_resource type="OccluderPolygon2D" id=3]
+closed = false
+cull_mode = 1
+polygon = PoolVector2Array( -196.069, -26.3269, -167.26, -104.997, -119.615, -161.507, -25.4323, -194.748, 62.1024, -188.1, 118.612, -155.967, 179.554, -78.4045, 195.066, -5.27429, 175.122, 90.0166, 124.152, 153.174, 52.1301, 185.307, -19.8921, 193.064, -98.5624, 172.011, -141.776, 133.23, -179.449, 80.0443, -196.069, -7.49036 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -19.6248, -2.51273, 17.2866, -2.62289, 16.8458, 2.77606, 0.318359, 4.64917, -16.76, 1.89459 )
+
 [node name="Node2D" type="Node2D"]
 script = SubResource( 1 )
 
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 7 )
+
 [node name="DestroyPlanet" parent="." instance=ExtResource( 5 )]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="DestroyPlanet"]
+occluder = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -560 )
@@ -38,7 +57,7 @@ script = ExtResource( 4 )
 target = NodePath("../Player")
 
 [node name="Player" type="Node2D" parent="."]
-position = Vector2( 0, -360 )
+position = Vector2( -23.7432, -290.929 )
 script = ExtResource( 3 )
 rotation_speed = 0.03
 bullet_prefab = ExtResource( 6 )
@@ -55,8 +74,19 @@ flip_h = true
 vframes = 5
 hframes = 5
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Player"]
+position = Vector2( -41.7594, 0.661133 )
+occluder = SubResource( 2 )
+
 [node name="Planet" type="Node2D" parent="."]
 visible = false
 
 [node name="Sprite" type="Sprite" parent="Planet"]
 texture = ExtResource( 2 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( -479.261, -530.483 )
+texture = ExtResource( 8 )
+texture_scale = 3.0
+color = Color( 0.717647, 0.137255, 0.137255, 1 )
+shadow_enabled = true

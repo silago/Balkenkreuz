@@ -28,14 +28,16 @@ func _input(event):
 	
 func _process(delta):
 	position=position+Vector2(delta,0).rotated(rotation)*speed*delta
-	#var new_angle =  rotation+get_angle_to(get_global_mouse_position())
-	#var lerp_new_angle = lerp_angle(rotation, new_angle,rotation_speed)
+	var new_angle =  rotation+clamp(get_angle_to(get_global_mouse_position()),-1,1)
+	var lerp_new_angle = lerp_angle(rotation, new_angle,0.05)
 	#var lerp_new_angle = (new_angle-
 	#rotation+=get_angle_to(get_global_mouse_position())
-	#rotation=lerp_new_angle
-	var ang = get_angle_to(get_global_mouse_position())
-	ang = clamp(ang,-0.02,0.02)
-	rotation = rotation +  ang#deg2rad(clamp(rad2deg(rotation-new_angle),-5,5))
+	rotation=lerp_new_angle
+	
+	
+	#var ang = get_angle_to(get_global_mouse_position())
+	#ang = clamp(ang,-0.02,0.02)
+	#rotation = rotation +  ang#deg2rad(clamp(rad2deg(rotation-new_angle),-5,5))
 
 	var deg_angle_to_earth = rad2deg(get_angle_to(Vector2.ZERO.rotated(rotation)))-90
 	if (deg_angle_to_earth < 0 ):
