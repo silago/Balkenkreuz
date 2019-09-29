@@ -7,6 +7,7 @@ extends Node2D
 export var speed = 10000
 export var rotation_speed = 0.05
 export var bullet_prefab : PackedScene
+export(float) var shoot_speed = 1.0
 # Called when the node enters the scene tree for the first time.
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var deg_per_frame : float = 25.0/360.0
@@ -27,7 +28,7 @@ func start_shoot():
 		instance.position = position
 		instance.rotation = self.rotation-deg2rad(90)
 		if (state & States.SHOOT)!=0:
-			yield(get_tree().create_timer(0.3),"timeout")
+			yield(get_tree().create_timer(shoot_speed),"timeout")
 		else:
 			return
 
@@ -50,7 +51,7 @@ func _input(event):
 			state = state & ~States.SHOOT
 			
 			
-		print(state)
+		#print(state)
 func _process(delta):
 	position=position+Vector2(delta,0).rotated(rotation)*speed*delta	
 	if (state & States.UP)!=0:

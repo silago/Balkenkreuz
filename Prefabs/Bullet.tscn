@@ -15,7 +15,7 @@ bullet_degree = 10.0
 accell = 1.0
 
 [node name="Poly" type="CollisionPolygon2D" parent="."]
-position = Vector2( -1.49544, 15.3373 )
+position = Vector2( -0.641062, 15.0525 )
 scale = Vector2( 1.79743, 1.78589 )
 polygon = PoolVector2Array( -14.9098, -22.1828, -17.3517, -8.80232, -12.468, 1.84743, 1.09791, 6.76271, 14.1211, 1.84743, 17.6483, -8.52925, 15.4777, -22.7289 )
 disabled = true

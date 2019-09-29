@@ -7,7 +7,7 @@ export var speed = 200
 
 export var speedLimit = 1000
 
-var collisionGroups = ["earth","player"]
+var collisionGroups = ["earth","enemy"]
 export var   bullet_degree = 20.0
 export var 	 accell = 0.0;
 
@@ -30,13 +30,13 @@ func destroy():
 	pass
 	
 func _on_enter(body):
+	#print(body.name)
 	if not dying:
 		for body in get_overlapping_bodies():
 			for collisionGroup in collisionGroups:
 				if body.is_in_group(collisionGroup):
 					if body.has_method("_on_hit"):
 						body._on_hit(self)
-						print("HIT")
 		explode()
 	
 func explode():

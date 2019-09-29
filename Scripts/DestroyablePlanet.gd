@@ -12,10 +12,10 @@ var explosion_scale = 2
 var shape
 var region_origin = Vector2(0,0)
 var newNode = []
-onready var  poly = get_node("Poly") as CollisionPolygon2D
-onready var  image = get_node("Image") as Polygon2D
+onready var  poly = $Poly as CollisionPolygon2D
+onready var  image = $Image as Polygon2D
 onready var  player = get_node("../../Player") 
-
+onready var  occluder = $Occluder
 var thread = Thread.new()
 
 #func _ready():	
@@ -51,34 +51,60 @@ func _make_damage(body : Area2D):
 	#print(clipper.get_solution_count())
 	var i = 0
 	var last_len = 0
-	for idx in clipper.get_solution_count():
-		#if (pы
+	var solutions_count = clipper.get_solution_count()
+	var solutions = []
+	print(solutions_count)
+	for idx in solutions_count:
 		var points = clipper.get_solution(idx)
 		if len(points)>last_len:
 			i = idx
 			last_len = len(points)
-	var points = clipper.get_solution(i)
-	#poly.set_polygon(points)
-	#image.set_polygon(points)
-	call_deferred("_update_poly", points)
-	clipper.clear()
-	return points
-
+		#print(i)
+		solutions.append(points)
+		
 	
+	
+	
+	for solution_index in range(solutions.size()):
+		if solution_index == i:
+			#var points = solutions[solution_index]
+			call_deferred("_update_poly", solutions[solution_index])
+		else:
+			#continue
+			var new_node = self.duplicate()
+			self.get_parent().add_child(new_node)
+			new_node._update_poly(solutions[solution_index])
+	clipper.clear()
+	#return points
+
 var shapeOwner = 0
 func _update_poly(points):
 	#var points = thread.wait_to_finish()
+	occluder.occluder.polygon = points  
 	poly.polygon = points
 	#print("poly")
 	image.set_polygon(points)
 	locked = false
-
+	
 var locked = false
 
 func _ready():
+	occluder.occluder = OccluderPolygon2D.new()
 	explosionParticlesPrefab.look_at(Vector2.ZERO)
 	explosionParticlesPrefab.rotation+=deg2rad(-180)
 	var shapeOwner = 0
+		
+	var p = []
+	var degree = 0
+	var radius = 200
+	while degree<360:
+		degree+=10
+		var radians = degree * PI/180
+		var x = 0 + radius * cos(radians)
+		var y = 0 + radius * sin(radians)
+		p.append(Vector2(x,y))
+	poly.polygon = p
+	occluder.occluder.polygon = p	
 	image.set_polygon(poly.polygon)
 
 	

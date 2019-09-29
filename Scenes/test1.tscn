@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Sprites/plane.grayscale.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/base planet.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Camera.gd" type="Script" id=4]
-[ext_resource path="res://Prefabs/DestroyPlanet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Sprites/zeppelin.png" type="Texture" id=5]
 [ext_resource path="res://Prefabs/Bullet.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Sprites/fog_sky.jpg" type="Texture" id=7]
 [ext_resource path="res://Assets/Sprites/light.png" type="Texture" id=8]
+[ext_resource path="res://Prefabs/DestroyPlanet.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scripts/Zeppelin.gd" type="Script" id=10]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -30,12 +32,24 @@ func _input(event):
 "
 
 [sub_resource type="OccluderPolygon2D" id=2]
-closed = false
-cull_mode = 1
-polygon = PoolVector2Array( -196.069, -26.3269, -167.26, -104.997, -119.615, -161.507, -25.4323, -194.748, 62.1024, -188.1, 118.612, -155.967, 179.554, -78.4045, 195.066, -5.27429, 175.122, 90.0166, 124.152, 153.174, 52.1301, 185.307, -19.8921, 193.064, -98.5624, 172.011, -141.776, 133.23, -179.449, 80.0443, -196.069, -7.49036 )
-
-[sub_resource type="OccluderPolygon2D" id=3]
 polygon = PoolVector2Array( -19.6248, -2.51273, 17.2866, -2.62289, 16.8458, 2.77606, 0.318359, 4.64917, -16.76, 1.89459 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 2
+emission_box_extents = Vector3( 50, 20, 1 )
+flag_disable_z = true
+gravity = Vector3( 20, -98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 117.064, 15.0094 )
+
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( -118.29, -5.76865, -81.7246, -17.5987, 73.858, -15.4477, 108.631, -15.4477, 110.065, 8.92929, 81.0278, 6.41989, 60.2355, 9.28775, -87.8188, 8.92929, -117.215, 0.325623 )
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 1 )
@@ -43,10 +57,7 @@ script = SubResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 7 )
 
-[node name="DestroyPlanet" parent="." instance=ExtResource( 5 )]
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="DestroyPlanet"]
-occluder = SubResource( 2 )
+[node name="DestroyPlanet" parent="." instance=ExtResource( 9 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -560 )
@@ -57,10 +68,12 @@ script = ExtResource( 4 )
 target = NodePath("../Player")
 
 [node name="Player" type="Node2D" parent="."]
-position = Vector2( -23.7432, -290.929 )
+position = Vector2( -874.538, -457.721 )
+z_index = 2
 script = ExtResource( 3 )
-rotation_speed = 0.3
+rotation_speed = 1.0
 bullet_prefab = ExtResource( 6 )
+shoot_speed = 0.1
 
 [node name="Camera2D2" type="Camera2D" parent="Player"]
 rotation = 1.5708
@@ -76,7 +89,7 @@ hframes = 5
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player"]
 position = Vector2( -41.7594, 0.661133 )
-occluder = SubResource( 3 )
+occluder = SubResource( 2 )
 
 [node name="Planet" type="Node2D" parent="."]
 visible = false
@@ -85,8 +98,87 @@ visible = false
 texture = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -479.261, -530.483 )
+position = Vector2( -220.175, -1007.94 )
 texture = ExtResource( 8 )
 texture_scale = 3.0
-color = Color( 0.717647, 0.137255, 0.137255, 1 )
+color = Color( 0.552941, 0.156863, 0.156863, 1 )
+range_z_min = -2
+range_z_max = 2
 shadow_enabled = true
+shadow_filter = 5
+shadow_filter_smooth = 4.1
+
+[node name="Zeppelin" type="KinematicBody2D" parent="." groups=[
+"enemy",
+]]
+position = Vector2( 705.137, -345.252 )
+script = ExtResource( 10 )
+speed = -15
+
+[node name="Smoke" type="Particles2D" parent="Zeppelin"]
+visible = false
+position = Vector2( 38.9999, -12.9999 )
+amount = 32
+lifetime = 2.0
+process_material = SubResource( 3 )
+
+[node name="sprite" type="Sprite" parent="Zeppelin"]
+z_index = 2
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zeppelin"]
+position = Vector2( -1.70639, -2.27518 )
+shape = SubResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Zeppelin"]
+occluder = SubResource( 5 )
+
+[node name="Zeppelin2" type="KinematicBody2D" parent="." groups=[
+"enemy",
+]]
+position = Vector2( 479.362, -526.612 )
+script = ExtResource( 10 )
+speed = -15
+
+[node name="Smoke" type="Particles2D" parent="Zeppelin2"]
+visible = false
+position = Vector2( 38.9999, -12.9999 )
+amount = 32
+lifetime = 2.0
+process_material = SubResource( 3 )
+
+[node name="sprite" type="Sprite" parent="Zeppelin2"]
+z_index = 2
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zeppelin2"]
+position = Vector2( -1.70639, -2.27518 )
+shape = SubResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Zeppelin2"]
+occluder = SubResource( 5 )
+
+[node name="Zeppelin3" type="KinematicBody2D" parent="." groups=[
+"enemy",
+]]
+position = Vector2( 198.069, -332.298 )
+script = ExtResource( 10 )
+speed = -15
+
+[node name="Smoke" type="Particles2D" parent="Zeppelin3"]
+visible = false
+position = Vector2( 38.9999, -12.9999 )
+amount = 32
+lifetime = 2.0
+process_material = SubResource( 3 )
+
+[node name="sprite" type="Sprite" parent="Zeppelin3"]
+z_index = 2
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zeppelin3"]
+position = Vector2( -1.70639, -2.27518 )
+shape = SubResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Zeppelin3"]
+occluder = SubResource( 5 )
