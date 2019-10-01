@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Sprites/planet400.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/DestroyablePlanet.gd" type="Script" id=2]
@@ -26,10 +26,13 @@ scale = 5.0
 scale_random = 1.0
 color = Color( 0.74902, 0.372549, 0.372549, 1 )
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="OccluderPolygon2D" id=6]
+polygon = PoolVector2Array( 0.837708, -194.492, 83.1459, -179.916, 139.733, -136.19, 178.315, -79.6032, 198.034, -8.44095, 186.888, 54.1476, 155.165, 121.023, 108.867, 159.605, 53.1376, 185.326, 2.55237, 192.185, -54.8919, 187.898, -120.053, 157.033, -168.923, 97.8738, -192.93, 37.8574, -196.359, -23.0164, -179.212, -84.7475, -136.343, -145.621, -77.1837, -183.346, -36.0296, -190.205 )
+
+[sub_resource type="CircleShape2D" id=7]
 radius = 996.465
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticlesMaterial" id=8]
 emission_shape = 1
 emission_sphere_radius = 180.0
 flag_disable_z = true
@@ -49,7 +52,7 @@ scale = 5.0
 scale_random = 1.0
 color = Color( 0.74902, 0.372549, 0.372549, 1 )
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=5]
 script/source = "extends Polygon2D
 
 #onready var path : Path2D = get_parent()
@@ -133,6 +136,7 @@ polygon = PoolVector2Array( -195.463, 0.76062, -191.944, -45.8297, -180.821, -74
 one_way_collision_margin = 10.0
 
 [node name="Occluder" type="LightOccluder2D" parent="StaticBody2D"]
+occluder = SubResource( 6 )
 
 [node name="Attractor" type="Area2D" parent="."]
 visible = false
@@ -145,7 +149,7 @@ collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attractor"]
 position = Vector2( -11, 0 )
-shape = SubResource( 2 )
+shape = SubResource( 7 )
 
 [node name="Path" type="Path2D" parent="."]
 visible = false
@@ -161,14 +165,14 @@ amount = 200
 lifetime = 60.0
 preprocess = 600.0
 fract_delta = false
-process_material = SubResource( 3 )
+process_material = SubResource( 8 )
 
 [node name="Image" type="Polygon2D" parent="Path"]
 visible = false
 texture = ExtResource( 1 )
 texture_offset = Vector2( 200, 200 )
 polygon = PoolVector2Array( -196.617, -13.6163, -193.135, -42.3518, -181.556, -83.2193, -154.153, -125.311, -115.146, -162.911, -86.5388, -179.258, -54.1854, -189.815, -5.14446, -196.626, 45.7413, -190.872, 87.4884, -177.555, 122.566, -155.078, 148.79, -129.536, 167.18, -102.291, 186.754, -63.0588, 195.994, -25.5849, 197.627, 8.12521, 187.232, 65.0836, 175.27, 93.5628, 156.474, 120.903, 136.057, 144.654, 99.2014, 168.447, 65.9146, 183.338, 25.0427, 193.525, -0.446201, 195.661, -27.6216, 194.339, -83.4738, 180.035, -121.957, 154.834, -156.354, 121.118, -176.107, 89.4457, -192.454, 51.3028, -197.903, 21.6739 )
-script = SubResource( 4 )
+script = SubResource( 5 )
 
 [node name="flak" type="Node2D" parent="."]
 position = Vector2( 7.8918, -195.796 )

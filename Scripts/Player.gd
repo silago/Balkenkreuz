@@ -17,7 +17,7 @@ enum States {IDLE=0, UP=1, DOWN=2, SHOOT=4}
 onready var state = States.IDLE
 
 func _ready():
-	print(deg_per_frame)
+	#print(deg_per_frame)
 	pass # Replace with function body.
 
 
