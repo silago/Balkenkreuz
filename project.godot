@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Line2D",
+"class": "Trail2D",
+"language": "GDScript",
+"path": "res://Scripts/trail_2d.gd"
+} ]
 _global_script_class_icons={
-
+"Trail2D": ""
 }
 
 [application]
@@ -21,7 +26,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Debug="*res://Prefabs/UI/Debug.tscn"
 Game="*res://Scripts/Game.gd"
+EventManager="*res://Prefabs/EventManager.tscn"
+
+[display]
+
+window/size/width=414
+window/size/height=736
 
 [rendering]
 

@@ -1,0 +1,101 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Prefabs/EnemyBullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Sprites/plane.grayscale.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/Explosions/explosionBig.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 11.4278
+
+[sub_resource type="Animation" id=2]
+resource_name = "damage"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 7, 7, 7, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "explosion"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Explosion:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 8 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Explosion:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="OccluderPolygon2D" id=4]
+polygon = PoolVector2Array( -19.6248, -2.51273, 17.2866, -2.62289, 16.8458, 2.77606, 0.318359, 4.64917, -16.76, 1.89459 )
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 267.5
+
+[node name="Body" type="KinematicBody2D" groups=[
+"enemy",
+]]
+script = ExtResource( 1 )
+speed = 15000
+rotation_speed = 0.85
+bullet_prefab = ExtResource( 2 )
+shoot_speed = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+flip_h = true
+vframes = 5
+hframes = 5
+
+[node name="Explosion" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 0.5, 0.5 )
+z_index = 1
+texture = ExtResource( 4 )
+hframes = 9
+frame = 8
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+anims/damage = SubResource( 2 )
+anims/explosion = SubResource( 3 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 4 )
+
+[node name="DetectionArea" type="Area2D" parent="." groups=[
+"enemy",
+]]
+position = Vector2( 254.252, -2.84399 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource( 5 )
+

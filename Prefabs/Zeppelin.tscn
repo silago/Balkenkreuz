@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/Zeppelin.gd" type="Script" id=1]
+[ext_resource path="res://Prefabs/EnemyBullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Sprites/zeppelin.png" type="Texture" id=3]
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 2
+emission_box_extents = Vector3( 50, 20, 1 )
+flag_disable_z = true
+gravity = Vector3( 20, -98, 0 )
+angular_velocity = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 117.064, 15.0094 )
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( -118.29, -5.76865, -81.7246, -17.5987, 73.858, -15.4477, 108.631, -15.4477, 110.065, 8.92929, 81.0278, 6.41989, 60.2355, 9.28775, -87.8188, 8.92929, -117.215, 0.325623 )
+
+[node name="Zeppelin" type="KinematicBody2D" groups=[
+"enemy",
+]]
+position = Vector2( 705.137, -345.252 )
+script = ExtResource( 1 )
+speed = -15
+bullet_prefab = ExtResource( 2 )
+
+[node name="Smoke" type="Particles2D" parent="."]
+visible = false
+position = Vector2( 38.9999, -12.9999 )
+amount = 32
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+z_index = 2
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1.70639, -2.27518 )
+shape = SubResource( 2 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 3 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="SpawnPos1" type="Node2D" parent="."]
+position = Vector2( -76.7304, 22.695 )
+
+[node name="SpawnPos2" type="Node2D" parent="."]
+position = Vector2( 25.937, 21.0739 )
+

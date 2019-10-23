@@ -8,18 +8,18 @@ extends Camera2D
 export var target : NodePath
 onready var target_obj = get_node(target)
 func _ready():
-	pass # Replace with function body.
-	#position = 
+    pass # Replace with function body.
+    #position = 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	global_position = target_obj.global_position
-	#look_at(Vector2.ZERO)
-	#position=position+Vector2(delta,0).rotated(rotation)*speed*delta
-	var new_angle = rotation+get_angle_to(target_obj.position)
-	#rotation+=get_angle_to(get_global_mouse_position())
-	rotation=lerp_angle(rotation, target_obj.rotation,0.05)
-	pass
+func _process(_delta):
+    global_position = target_obj.global_position
+    #look_at(Vector2.ZERO)
+    #position=position+Vector2(delta,0).rotated(rotation)*speed*delta
+    #var new_angle = rotation+get_angle_to(target_obj.position)
+    #rotation+=get_angle_to(get_global_mouse_position())
+    rotation=lerp_angle(rotation, target_obj.rotation,0.05)
+    pass
 
 func lerp_angle(from, to, weight):
     return from + short_angle_dist(from, to) * weight
